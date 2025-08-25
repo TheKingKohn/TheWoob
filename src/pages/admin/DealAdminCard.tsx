@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "../../components/Toast";
+import Image from "next/image";
 
 export default function DealAdminCard({ deal, onUpdate, onDelete }: any) {
 	const [editing, setEditing] = useState(false);
