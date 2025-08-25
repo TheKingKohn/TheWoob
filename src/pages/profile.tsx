@@ -1,5 +1,6 @@
 import { getIronSession } from "iron-session";
 import Link from "next/link";
+import Image from "next/image";
 import { sessionOptions } from "../lib/session";
 import { prisma } from "../lib/prisma";
 import Nav from "../components/Nav";
@@ -118,9 +119,11 @@ export default function Profile({ user }: any) {
 								{/* Profile picture circle */}
 								<div className="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
 									{profileImage ? (
-										<img
+										<Image
 											src={profileImage}
 											alt="Profile"
+											width={80}
+											height={80}
 											className="w-full h-full object-cover"
 										/>
 									) : null}

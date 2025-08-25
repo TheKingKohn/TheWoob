@@ -1,5 +1,7 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import Image from "next/image";
 import { useState } from "react";
 import { prisma } from "../../lib/prisma";
 import Nav from "../../components/Nav";
@@ -84,9 +86,11 @@ export default function Listing({ l, authed, user }: any) {
 								<div className="flex items-center gap-3">
 									<div className="w-10 h-10 rounded-full bg-woob-accent/20 flex items-center justify-center overflow-hidden">
 										{l.seller?.image ? (
-											<img
+											<Image
 												src={l.seller.image}
 												alt="Seller profile"
+												width={40}
+												height={40}
 												className="w-full h-full object-cover"
 											/>
 										) : (

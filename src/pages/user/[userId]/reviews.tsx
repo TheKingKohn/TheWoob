@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getIronSession } from "iron-session";
 import { sessionOptions } from "../../../lib/session";
 import { prisma } from "../../../lib/prisma";
@@ -159,9 +160,11 @@ export default function UserReviewsPage({
 						<div className="flex flex-col md:flex-row items-center gap-3 md:gap-6">
 							<div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-woob-accent/20 flex items-center justify-center overflow-hidden border-2 border-woob-accent shadow-sm">
 								{profileUser.image ? (
-									<img
+									<Image
 										src={profileUser.image}
 										alt="Profile"
+										width={96}
+										height={96}
 										className="w-full h-full object-cover"
 									/>
 								) : (
@@ -407,9 +410,11 @@ export default function UserReviewsPage({
 												className="block p-3 rounded bg-white/5 hover:bg-white/10 transition-colors"
 											>
 												{firstImage && (
-													<img
+													<Image
 														src={firstImage}
 														alt={newest.title}
+														width={320}
+														height={128}
 														className="w-full h-20 md:h-32 object-cover rounded-lg mb-2 shadow-sm"
 													/>
 												)}
@@ -471,9 +476,11 @@ export default function UserReviewsPage({
 											className="block rounded-lg bg-white/5 hover:bg-white/10 transition-colors overflow-hidden"
 										>
 											{firstImage ? (
-												<img
+												<Image
 													src={firstImage}
 													alt={listing.title}
+													width={320}
+													height={160}
 													className="w-full h-20 md:h-40 object-cover rounded-lg mb-2 shadow-sm"
 												/>
 											) : (

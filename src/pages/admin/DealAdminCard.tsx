@@ -134,9 +134,11 @@ export default function DealAdminCard({ deal, onUpdate, onDelete }: any) {
 	return (
 		<div className="card p-6">
 			{deal.imageUrl && (
-				<img
+				<Image
 					src={deal.imageUrl}
 					alt={deal.title}
+					width={320}
+					height={128}
 					className="mb-2 rounded-lg w-full h-32 object-cover"
 				/>
 			)}

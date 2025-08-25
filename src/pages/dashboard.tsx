@@ -32,13 +32,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 		},
 	};
 };
-
 export default function Dashboard({ user, stats, listings }: any) {
 	const activeListings = listings.filter((l: any) => l.status === "active");
 	const soldListings = listings.filter((l: any) => l.status === "sold");
 	const archivedListings = listings.filter((l: any) => l.status === "archived");
 	const soldAsBuyer = soldListings.filter((l: any) => l.buyerId === user.id);
-
 	return (
 		<>
 			<Nav authed={true} user={user} />
@@ -100,41 +98,41 @@ export default function Dashboard({ user, stats, listings }: any) {
 								{stats.count}
 							</div>
 						</div>
-						<div className="card p-6 text-center">
-							<div className="text-2xl font-semibold mb-2 text-purple-300">Your Invite Code</div>
-							<div className="flex items-center justify-center gap-2 mb-3">
-								<span className="text-2xl font-mono font-bold text-purple-400 select-all bg-black/10 px-5 py-2 rounded-lg border border-purple-700">
-									{user.affiliateCode || "Not assigned"}
-								</span>
-								{user.affiliateCode && (
-									<button
-										className="inline-flex items-center px-2 py-1 rounded bg-purple-700 text-white hover:bg-purple-800 transition border border-purple-900"
-										onClick={() => {
-											navigator.clipboard.writeText(user.affiliateCode);
-											const toast = document.createElement('div');
-											toast.textContent = 'Copied!';
-											toast.style.position = 'fixed';
-											toast.style.bottom = '32px';
-											toast.style.left = '50%';
-											toast.style.transform = 'translateX(-50%)';
-											toast.style.background = '#7c3aed';
-											toast.style.color = '#fff';
-											toast.style.padding = '8px 20px';
-											toast.style.borderRadius = '8px';
-											toast.style.fontWeight = 'bold';
-											toast.style.zIndex = '9999';
-											document.body.appendChild(toast);
-											setTimeout(() => toast.remove(), 1200);
-										}}
-										title="Copy code"
-									>
-										<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16h8a2 2 0 002-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v6a2 2 0 002 2z" /></svg>
-										Copy
-									</button>
-								)}
-							</div>
-							<div className="text-xs text-white/70 mt-3 font-medium">Invite friends and earn rewards. Sharing is easy!</div>
+					</div>
+					<div className="card p-6 text-center">
+						<div className="text-2xl font-semibold mb-2 text-purple-300">Your Invite Code</div>
+						<div className="flex items-center justify-center gap-2 mb-3">
+							<span className="text-2xl font-mono font-bold text-purple-400 select-all bg-black/10 px-5 py-2 rounded-lg border border-purple-700">
+								{user.affiliateCode || "Not assigned"}
+							</span>
+							{user.affiliateCode && (
+								<button
+									className="inline-flex items-center px-2 py-1 rounded bg-purple-700 text-white hover:bg-purple-800 transition border border-purple-900"
+									onClick={() => {
+										navigator.clipboard.writeText(user.affiliateCode);
+										const toast = document.createElement('div');
+										toast.textContent = 'Copied!';
+										toast.style.position = 'fixed';
+										toast.style.bottom = '32px';
+										toast.style.left = '50%';
+										toast.style.transform = 'translateX(-50%)';
+										toast.style.background = '#7c3aed';
+										toast.style.color = '#fff';
+										toast.style.padding = '8px 20px';
+										toast.style.borderRadius = '8px';
+										toast.style.fontWeight = 'bold';
+										toast.style.zIndex = '9999';
+										document.body.appendChild(toast);
+										setTimeout(() => toast.remove(), 1200);
+									}}
+									title="Copy code"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16h8a2 2 0 002-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v6a2 2 0 002 2z" /></svg>
+									Copy
+								</button>
+							)}
 						</div>
+						<div className="text-xs text-white/70 mt-3 font-medium">Invite friends and earn rewards. Sharing is easy!</div>
 					</div>
 				</div>
 
@@ -241,20 +239,22 @@ export default function Dashboard({ user, stats, listings }: any) {
 							Leave a Review for Your Seller
 						</h2>
 						<div className="space-y-4">
-							{soldAsBuyer.map((l: any) => (
-								<ReviewButton
-									key={l.id}
-									revieweeId={l.sellerId}
-									revieweeName={l.seller?.name || "Seller"}
-									orderId={l.orderId}
-									listingId={l.id}
-									listingTitle={l.title}
-									className="btn"
-									onReviewSubmitted={() => window.location.reload()}
-								>
-									Review {l.seller?.name || "Seller"} for "{l.title}"
-								</ReviewButton>
-							))}
+							{soldAsBuyer.map((l: any) => {
+								return (
+									<ReviewButton
+										key={l.id}
+										revieweeId={l.sellerId}
+										revieweeName={l.seller?.name || "Seller"}
+										orderId={l.orderId}
+										listingId={l.id}
+										listingTitle={l.title}
+										className="btn"
+										onReviewSubmitted={() => window.location.reload()}
+									>
+										Review {l.seller?.name || "Seller"} for &quot;{l.title}&quot;
+									</ReviewButton>
+								);
+							})}
 						</div>
 					</div>
 				)}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getIronSession } from "iron-session";
 import { sessionOptions } from "../lib/session";
 import { prisma } from "../lib/prisma";
@@ -369,9 +370,11 @@ export default function AdminDashboard({
 								placeholder="Paste image URL (optional)"
 							/>
 							{dealForm.imageUrl && (
-								<img
+								<Image
 									src={dealForm.imageUrl}
 									alt="Deal preview"
+									width={320}
+									height={128}
 									className="mt-2 rounded-lg w-full h-32 object-cover border border-blue-400/30"
 								/>
 							)}

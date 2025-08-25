@@ -6,6 +6,7 @@ import { prisma } from "../../lib/prisma";
 import Nav from "../../components/Nav";
 import { VideoUpload } from "../../components/VideoUpload";
 import { toast } from "../../components/Toast";
+import Image from "next/image";
 
 import type { GetServerSideProps } from "next";
 
@@ -193,9 +194,11 @@ export default function EditListing({ listing, user }: EditListingProps) {
 						<div className="flex gap-2 mb-2 flex-wrap">
 							{images.map((img: string, idx: number) => (
 								<div key={idx} className="relative">
-									<img
+									<Image
 										src={img}
 										alt="Listing"
+										width={80}
+										height={80}
 										className="w-20 h-20 object-cover rounded-lg border"
 									/>
 									<button

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import Nav from "../components/Nav";
 
@@ -54,9 +55,11 @@ export default function DealsPage() {
 								</div>
 								<div className="mb-3">
 									{deal.imageUrl ? (
-										<img
+										<Image
 											src={deal.imageUrl}
 											alt={deal.title}
+											width={320}
+											height={160}
 											className="rounded-lg w-full h-40 object-cover border border-blue-400/30"
 										/>
 									) : (
@@ -64,11 +67,13 @@ export default function DealsPage() {
 											🏪
 										</div>
 									)}
-								</div>
-								<h3 className="text-2xl font-bold text-blue-300 mb-1">
-									{deal.title}
-								</h3>
-								<div className="text-lg font-semibold text-purple-300 mb-2">
+											<Image
+												src={deal.imageUrl}
+												alt={deal.title}
+												width={320}
+												height={160}
+												className="rounded-lg w-full h-40 object-cover border border-blue-400/30"
+											/>
 									{deal.businessName}
 								</div>
 								<div className="text-sm text-white/70 mb-2">
