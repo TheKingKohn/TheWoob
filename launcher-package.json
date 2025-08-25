@@ -1,0 +1,9 @@
+{
+	"name": "TheWoob Launcher",
+	"version": "1.0.0",
+	"description": "One-click launcher for TheWoob marketplace",
+	"main": "launcher.js",
+	"scripts": {
+		"launch": "node launcher.js"
+	}
+}

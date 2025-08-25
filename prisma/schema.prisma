@@ -1,0 +1,164 @@
+model AdminAudit {
+  id        String   @id @default(cuid())
+  adminId   String
+  action    String
+  targetType String?
+  targetId  String?
+  details   String?
+  ip        String?
+  createdAt DateTime @default(now())
+  admin     User     @relation(fields: [adminId], references: [id])
+}
+// SQL view for active listings
+// Run this manually in your database:
+// CREATE VIEW public.active_listings_view AS SELECT * FROM Listing WHERE status != 'DELETED';
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String?
+  image           String?
+  password        String?   // Optional for backwards compatibility
+  emailVerified   Boolean   @default(false)
+  verificationToken String?
+  resetToken      String?
+  resetTokenExpiry DateTime?
+  lastLoginAt     DateTime?
+  loginAttempts   Int       @default(0)
+  lockedUntil     DateTime?
+  role            String    @default("user")
+  stripeAccountId String?
+  affiliateCode   String?   @unique // Unique affiliate code for sharing
+  invitedById     String?
+  invitedBy       User?     @relation("UserInvites", fields: [invitedById], references: [id])
+  invites         User[]    @relation("UserInvites")
+  bio             String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  listings        Listing[]
+  orders          Order[]   @relation("BuyerOrders")
+  sentMessages    Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  conversations   Conversation[] @relation("ConversationParticipants")
+  sellerConversations Conversation[] @relation("SellerConversations")
+  reviewsGiven    Review[]  @relation("ReviewsGiven")
+  reviewsReceived Review[]  @relation("ReviewsReceived")
+  deals           Deal[]
+  adminAudits     AdminAudit[]
+  verifiedSeller  Boolean   @default(false)
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  priceCents  Int
+  images      String?  // JSON array of image URLs
+  videoUrl    String?  // Single video URL per listing
+  category    String?
+  seller      User     @relation(fields: [sellerId], references: [id])
+  sellerId    String
+  status      String   @default("ACTIVE") // DRAFT | ACTIVE | SOLD | HIDDEN | DELETED
+  deletedAt   DateTime?
+  isDigital   Boolean  @default(false) // True if this is a digital product
+  digitalFileUrl String? // URL to the uploaded digital file
+  licenseKey  String?  // Optional license key for digital products
+  createdAt   DateTime @default(now())
+  order       Order?
+  conversations Conversation[]
+  reviews     Review[]
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model Order {
+  id              String   @id @default(cuid())
+  listing         Listing  @relation(fields: [listingId], references: [id])
+  listingId       String   @unique
+  buyer           User?    @relation("BuyerOrders", fields: [buyerId], references: [id])
+  buyerId         String?
+  amountCents     Int
+  paymentIntentId String?  @unique
+  status          String   @default("pending") // pending | paid | failed | refunded
+  createdAt       DateTime @default(now())
+  review          Review?
+  platformFeeCents Int
+  feePolicyVersion String?
+  paymentMethod    String
+  totalCents       Int
+}
+
+model Conversation {
+  id          String    @id @default(cuid())
+  listing     Listing?  @relation(fields: [listingId], references: [id])
+  listingId   String?
+  buyer       User?     @relation("ConversationParticipants", fields: [buyerId], references: [id])
+  buyerId     String?
+  seller      User?     @relation("SellerConversations", fields: [sellerId], references: [id])
+  sellerId    String?
+  lastMessage String?
+  lastMessageAt DateTime?
+  createdAt   DateTime  @default(now())
+  messages    Message[]
+
+  @@unique([listingId, buyerId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  senderId       String
+  receiver       User         @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId     String
+  content        String
+  read           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+}
+
+model Deal {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  businessName  String
+  discountDetails String?
+  validFrom     DateTime?
+  validTo       DateTime?
+  imageUrl      String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  createdBy     String
+  admin         User     @relation(fields: [createdBy], references: [id])
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  rating      Int      // 1-5 stars
+  comment     String?  // Optional written review
+  reviewer    User     @relation("ReviewsGiven", fields: [reviewerId], references: [id])
+  reviewerId  String
+  reviewee    User     @relation("ReviewsReceived", fields: [revieweeId], references: [id])
+  revieweeId  String
+  order       Order?   @relation(fields: [orderId], references: [id])
+  orderId     String?  @unique // Optional - links to specific transaction
+  listing     Listing? @relation(fields: [listingId], references: [id])
+  listingId   String?  // Optional - what listing this review is about
+  type        String   @default("user") // "user", "seller", "buyer"
+  helpful     Int      @default(0) // Number of people who found this helpful
+  reported    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([reviewerId, revieweeId, orderId]) // Prevent duplicate reviews for same transaction
+  @@index([revieweeId, rating])
+  @@index([createdAt])
+}

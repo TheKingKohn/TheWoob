@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme Variables */
+:root {
+	color-scheme: dark;
+	--woob-bg: #0a0f1c;
+	--woob-panel: #1a2332;
+	--woob-accent: #00d4ff;
+	--woob-text: #ffffff;
+	--woob-text-muted: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="light"] {
+	color-scheme: light;
+	--woob-bg: #f8fafc;
+	--woob-panel: #ffffff;
+	--woob-accent: #0066cc;
+	--woob-text: #1a202c;
+	--woob-text-muted: rgba(26, 32, 44, 0.7);
+}
+
+body {
+	@apply antialiased transition-colors duration-300;
+	background-color: var(--woob-bg);
+	color: var(--woob-text);
+}
+
+.woob-container {
+	@apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Logo specific styling to prevent clipping */
+.woob-logo {
+	height: 48px !important;
+	width: auto !important;
+	max-width: 160px !important;
+	object-fit: contain !important;
+	display: block !important;
+	overflow: visible !important;
+}
+
+.panel {
+	background-color: rgba(26, 35, 50, 0.8);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 0.75rem;
+	box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .panel {
+	background-color: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Enhanced Button System */
+.btn {
+	@apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg 
+  bg-woob-accent hover:bg-purple-500 transition-all duration-200 font-medium
+  disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl
+  text-sm focus:outline-none focus:ring-2 focus:ring-woob-accent/50;
+}
+
+.btn-outline {
+	@apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg 
+  border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200
+  text-sm focus:outline-none focus:ring-2 focus:ring-white/20;
+}
+
+.btn-small {
+	@apply inline-flex items-center justify-center px-3 py-1.5 rounded-md
+  bg-woob-accent hover:bg-purple-500 transition-all duration-200 font-medium
+  disabled:opacity-50 disabled:cursor-not-allowed text-xs;
+}
+
+.btn-outline-small {
+	@apply inline-flex items-center justify-center px-3 py-1.5 rounded-md
+  border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200
+  text-xs;
+}
+
+/* Enhanced Input System */
+.input {
+	@apply w-full px-4 py-2.5 bg-black/40 border border-white/10 rounded-lg 
+  focus:outline-none focus:ring-2 focus:ring-woob-accent focus:border-transparent
+  placeholder:text-white/40 transition-all duration-200;
+}
+
+.input:focus {
+	@apply bg-black/60 shadow-lg;
+}
+
+.input-small {
+	@apply w-full px-3 py-2 bg-black/40 border border-white/10 rounded-md 
+  focus:outline-none focus:ring-2 focus:ring-woob-accent focus:border-transparent
+  placeholder:text-white/40 transition-all duration-200 text-sm;
+}
+
+.label {
+	@apply block text-xs uppercase tracking-wider text-white/60 mb-2 font-medium;
+}
+
+.badge {
+	@apply inline-flex items-center px-2.5 py-1 text-xs rounded-full bg-white/10 border border-white/10 
+  font-medium;
+}
+
+.badge-success {
+	@apply bg-green-500/20 border-green-500/30 text-green-300;
+}
+
+.badge-warning {
+	@apply bg-yellow-500/20 border-yellow-500/30 text-yellow-300;
+}
+
+.badge-info {
+	@apply bg-blue-500/20 border-blue-500/30 text-blue-300;
+}
+
+.badge-info {
+	@apply bg-blue-500/20 border-blue-500/30 text-blue-300;
+}
+
+/* Enhanced Card System */
+.card {
+	@apply panel transition-all duration-200 hover:shadow-glow hover:border-white/20;
+}
+
+.card-hover {
+	@apply hover:scale-[1.02] hover:-translate-y-1;
+}
+
+/* Price Display */
+.price-large {
+	@apply text-2xl font-bold text-woob-accent;
+}
+
+.price-medium {
+	@apply text-lg font-semibold text-woob-accent;
+}
+
+.price-small {
+	@apply text-sm font-medium text-woob-accent;
+}
+
+/* Loading Animation */
+@keyframes pulse-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 5px rgba(124, 77, 255, 0.3);
+	}
+	50% {
+		box-shadow: 0 0 20px rgba(124, 77, 255, 0.6);
+	}
+}
+
+.animate-pulse-glow {
+	animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Enhanced Loading Skeleton */
+@keyframes shimmer {
+	0% {
+		background-position: -468px 0;
+	}
+	100% {
+		background-position: 468px 0;
+	}
+}
+
+.skeleton {
+	@apply bg-white/10 rounded;
+	background-image: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.1),
+		transparent
+	);
+	background-size: 468px 100%;
+	animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Typography Improvements */
+.text-heading-1 {
+	@apply text-4xl md:text-5xl font-extrabold leading-tight;
+}
+
+.text-heading-2 {
+	@apply text-3xl md:text-4xl font-bold leading-tight;
+}
+
+.text-heading-3 {
+	@apply text-2xl md:text-3xl font-bold leading-tight;
+}
+
+.text-heading-4 {
+	@apply text-xl md:text-2xl font-semibold leading-tight;
+}
+
+.text-body-large {
+	@apply text-lg leading-relaxed;
+}
+
+.text-body {
+	@apply text-base leading-relaxed;
+}
+
+.text-body-small {
+	@apply text-sm leading-relaxed;
+}
+
+.text-caption {
+	@apply text-xs text-white/60;
+}
+
+/* Smooth scrolling */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+/* Upload progress animation */
+.upload-progress {
+	transition: width 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-woob-bg;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-white/20 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-white/30;
+}
